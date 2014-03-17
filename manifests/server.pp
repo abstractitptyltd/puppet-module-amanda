@@ -9,6 +9,7 @@ class amanda::server (
   $xinetd                   = true,
   $manage_dle               = false,
   $import_host_keys         = false,
+  $manage_ssh_keys          = false,
 ) {
   include amanda
   include amanda::params
@@ -67,6 +68,14 @@ class amanda::server (
   if ($import_host_keys) {
     ## import client ssh hosy keys into known_hosts
     SshKey <<| tag == 'amanda_client_host_keys' |>>
+  }
+
+  if ($manage_ssh_keys) {
+    sshkeys::create_key { $owner_real:
+      home           => $amanda::params::homedir,
+      manage_home    => false,
+      create_ssh_dir => false,
+    }
   }
 
 }

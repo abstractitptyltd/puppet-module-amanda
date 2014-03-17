@@ -3,6 +3,7 @@ class amanda::client (
   $server           = "backup.$::domain",
   $xinetd           = true,
   $import_host_keys = false,
+  $manage_ssh_keys = false,
 ) {
   include amanda
   include amanda::params
@@ -42,6 +43,20 @@ class amanda::client (
       type         => 'ssh-rsa',
       target       => "${amanda::params::homedir}/.ssh/known_hosts",
       tag          => 'amanda_client_host_keys',
+    }
+  }
+
+  if ($manage_ssh_keys) {
+    sshkeys::set_authorized_key {"${remote_user_real}@${server} to ${remote_user_real}@${::hostname}":
+      local_user  => $remote_user_real,
+      remote_user => "${remote_user_real}@${server}",
+      home        => $amanda::params::homedir,
+      options     => [
+        'no-port-forwarding',
+        'no-X11-forwarding',
+        'no-agent-forwarding',
+        "command=\"${amanda::params::amandad_path} -auth=ssh amdump\"",
+      ],
     }
   }
 
