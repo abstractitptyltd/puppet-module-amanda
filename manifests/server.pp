@@ -8,6 +8,7 @@ class amanda::server (
   $owner                    = undef,
   $xinetd                   = true,
   $manage_dle               = false,
+  $manage_ssh_keys          = false,
 ) {
   include amanda
   include amanda::params
@@ -63,4 +64,11 @@ class amanda::server (
     manage_dle               => $manage_dle,
   }
 
+  if ($manage_ssh_keys) {
+    sshkeys::create_key { $owner_real:
+      home           => $amanda::params::homedir,
+      manage_home    => false,
+      create_ssh_dir => false,
+    }
+  }
 }
