@@ -5,7 +5,7 @@ define amanda::disklist::dle (
     $ensure     = present,
     $interface  = undef,
     $order      = 20,
-    $spindle    = undef
+    $spindle    = undef,
     ) {
     include amanda::params
     include amanda::virtual
@@ -18,6 +18,7 @@ define amanda::disklist::dle (
         ensure     => $ensure,
         interface  => $interface,
         order      => $order,
-        spindle    => $spindle
+        spindle    => $spindle,
+        node_fqdn  => $::fqdn,
     }
 }
