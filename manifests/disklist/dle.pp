@@ -1,8 +1,8 @@
 define amanda::disklist::dle (
     $configs,
-    $diskdevice = undef,
     $dumptype,
     $ensure     = present,
+    $diskdevice = undef,
     $interface  = undef,
     $order      = 20,
     $spindle    = undef
@@ -13,9 +13,9 @@ define amanda::disklist::dle (
     $entries = regsubst($configs, '.*', "${title}@\\0")
 
     amanda::disklist { $entries:
+        ensure     => $ensure,
         diskdevice => $diskdevice,
         dumptype   => $dumptype,
-        ensure     => $ensure,
         interface  => $interface,
         order      => $order,
         spindle    => $spindle
