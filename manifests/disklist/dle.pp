@@ -6,6 +6,7 @@ define amanda::disklist::dle (
     $interface  = undef,
     $order      = 20,
     $spindle    = undef,
+    $node_fqdn  = $::fqdn,
     ) {
     include amanda::params
     include amanda::virtual
